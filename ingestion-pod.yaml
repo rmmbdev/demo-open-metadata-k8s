@@ -1,0 +1,18 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: ingestion-pod
+spec:
+  containers:
+    - name: ingestion
+      image: focker.ir/openmetadata/ingestion-base:1.9.5
+      command: [ "metadata", "ingest", "-c", "/ingestion.yaml" ]
+      volumeMounts:
+        - name: config-volume
+          mountPath: /ingestion.yaml
+          subPath: ingestion.yaml
+  volumes:
+    - name: config-volume
+      configMap:
+        name: ingestion-config
+  restartPolicy: Never

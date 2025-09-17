@@ -1,0 +1,61 @@
+# values.yaml
+openmetadata:
+  config:
+    authentication:
+      enabled: false # Disable authentication for simplicity in testing
+    pipelineServiceClientConfig:
+      enabled: false # Disable pipeline service client if not needed
+    elasticsearch:
+      enabled: true
+      host: elasticsearch-service
+      searchType: elasticsearch
+      port: 9200
+      scheme: http
+      clusterAlias: "my-openmetadata"
+      payLoadSize: 10485760
+      connectionTimeoutSecs: 5
+      socketTimeoutSecs: 60
+      batchSize: 100
+      searchIndexMappingLanguage: "EN"
+      keepAliveTimeoutSecs: 600
+      trustStore:
+        enabled: false
+      auth:
+        enabled: false
+    database:
+      enabled: true
+      auth:
+        username: "postgres"
+        password:
+          secretRef: "postgres-secrets"
+          secretKey: "openmetadata-postgres-password"
+      databaseName: "openmetadata_db"
+      dbParams: "useSSL=false&serverTimezone=UTC"
+      dbScheme: "postgresql"
+      driverClass: org.postgresql.Driver
+      host: postgres-openmetadata-service
+      port: 5432
+
+image:
+  repository: focker.ir/openmetadata/server
+  tag: "1.9.5"
+  pullPolicy: IfNotPresent
+
+
+# Resource limits for OpenMetadata
+resources:
+  limits:
+    memory: "4Gi"
+    cpu: "2"
+  requests:
+    memory: "2Gi"
+    cpu: "1"
+
+# Ingress (optional, for external access)
+ingress:
+  enabled: false
+
+# Service configuration
+service:
+  type: ClusterIP
+  port: 8585

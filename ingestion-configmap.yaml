@@ -1,0 +1,34 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: ingestion-config
+data:
+  ingestion.yaml: |
+    source:
+      type: postgres
+      serviceName: postgres_db1_service
+      serviceConnection:
+        config:
+          type: Postgres
+          username: postgres
+          authType:
+            password: postgres
+          hostPort: postgres-db1-service:5432
+          database: db1
+      sourceConfig:
+        config:
+          type: DatabaseMetadata
+          includeTables: true
+          includeViews: true
+          includeStoredProcedures: true
+          markDeletedTables: true
+    sink:
+      type: metadata-rest
+      config: {}
+    workflowConfig:
+      openMetadataServerConfig:
+        hostPort: http://openmetadata:8585/api
+        authProvider: openmetadata
+        securityConfig:
+          jwtToken: "eyJraWQiOiJHYjM4OWEtOWY3Ni1nZGpzLWE5MmotMDI0MmJrOTQzNTYiLCJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJvcGVuLW1ldGFkYXRhLm9yZyIsInN1YiI6ImluZ2VzdGlvbi1ib3QiLCJyb2xlcyI6WyJJbmdlc3Rpb25Cb3RSb2xlIl0sImVtYWlsIjoiaW5nZXN0aW9uLWJvdEBvcGVuLW1ldGFkYXRhLm9yZyIsImlzQm90Ijp0cnVlLCJ0b2tlblR5cGUiOiJCT1QiLCJpYXQiOjE3NTcyMzQzODcsImV4cCI6bnVsbH0.bwHPOOcPufbtHPQl36pp8xnti_N_752HrIEDL-KTr_CP-9A2B-uN82URcec0jL0WsHW-D9knME7vbtTmci9diNMXZgOPznSyNUFrTqEvyN1oPkZ5AQvw_11NSaCJuibyHFjQRV2DLliSep-2JJz8UkExzOjDJNhc_SXrl4I-bPNSAEqInLcQ47Ah8ZJcZthuZbIMcPn7unIHhMSrJtpEtHNSZMGUDB8XwvsJEQ2Be--xW3yNwYUt0yoXWPZsitEIaerfzhhrWXx2mxJ_zaYlzLU-uy7yOHZR9CYwwP0xOKhlBbI5Fx7fGx7ofnwvy4-cKWrN4VLBNS1nRqFgvcvI6g"
+      loggerLevel: DEBUG
